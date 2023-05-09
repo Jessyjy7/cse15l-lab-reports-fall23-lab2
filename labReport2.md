@@ -5,8 +5,120 @@
 * Reflection on Learning
 
 ## Part 1: String Server(unfinished)
-I enrolled in this class late, so I was mainly working on catching up and lab 1, I will make this part up by late submission.
-Please give me some comments for the later parts, thank you!
+The code for StringServer.java and Server.java is shown below:
+1. StringServer.java
+```
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+class StringHandler implements URLHandler {
+  List<String> lines;
+  String path;
+  StringHandler(String path) throws IOException {
+    this.path = path;
+    this.lines = Files.readAllLines(Paths.get(path));
+  }
+  public String handleRequest(URI url) throws IOException {
+    String query = url.getQuery();
+    if(url.getPath().equals("/add-message")) {
+      if(query.startsWith("s=")) {
+        String toAdd = query.split("=")[1];
+        this.lines.add(toAdd);
+        return String.format("%s added, there are now %s lines\n", toAdd, this.lines.size());
+      }
+      else {
+        return "/add-message requires a query parameter s\n";
+      }
+    }else {
+      return String.join("\n", lines) + "\n";
+    }
+  }
+}
+
+class StringServer {
+  public static void main(String[] args) throws IOException {
+    if(args.length == 0){
+      System.out.println("Missing port number! Try any number between 1024 to 49151");
+      return;
+    }
+    if(args.length == 1){
+      System.out.println("Missing file path! Give a path to a text file as the second argument.");
+      return;
+    }
+
+    int port = Integer.parseInt(args[0]);
+
+    Server.start(port, new StringHandler(args[1]));
+  }
+}
+```
+2. Server.java
+```
+// A simple web server using Java's built-in HttpServer
+
+// Examples from https://dzone.com/articles/simple-http-server-in-java were useful references
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.InetAddress;
+import java.net.URI;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+
+interface URLHandler {
+    String handleRequest(URI url) throws Exception;
+}
+
+class ServerHttpHandler implements HttpHandler {
+    URLHandler handler;
+    ServerHttpHandler(URLHandler handler) {
+      this.handler = handler;
+    }
+    public void handle(final HttpExchange exchange) throws IOException {
+        // form return body after being handled by program
+        try {
+            String ret = handler.handleRequest(exchange.getRequestURI());
+            // form the return string and write it on the browser
+            exchange.sendResponseHeaders(200, ret.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(ret.getBytes());
+            os.close();
+        } catch(Exception e) {
+            String response = e.toString();
+            exchange.sendResponseHeaders(500, response.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+}
+
+public class Server {
+    public static void start(int port, URLHandler handler) throws IOException {
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+
+        //create request entrypoint
+        server.createContext("/", new ServerHttpHandler(handler));
+
+        //start the server
+        server.start();
+        System.out.println("Server started at http://" + InetAddress.getLocalHost().getHostName() + ":" + port);
+        System.out.println("(Or, if it's running locally on this computer, use http://localhost:" + port + " )");
+    }
+}
+```
+Below, I'll display 2 examples of calling the `add-message` method using `/add-message?s=<string>` query in the URL:
+1. `/add-message?s=How`, then the webpage should have the argument "How" on the path local host home page. The field toAdd in the java file should equal to "How" as well. The code `String query = url.getQuery()` will get the full query from the URL and store it. Then `if(url.getPath().equals("/add-message"))` will find out if the query has `/add-message`, if so `String toAdd = query.split("=")[1]` will take everything after "=" as the message to be added. `this.lines.add(toAdd)` will do the add-message function for the webpage we are testing one.
+
+
+2. `/add-message?s=How%20are%20you`, then the webpage should have the argument "How are you" as the line after "How" on the path local host home page. The field toAdd in the java file should equal to "How are you" as well. The code `String query = url.getQuery()` will get the full query from the URL and store it. Then `if(url.getPath().equals("/add-message"))` will find out if the query has `/add-message`, if so `String toAdd = query.split("=")[1]` will take everything after "=" as the message to be added. `this.lines.add(toAdd)` will do the add-message function for the webpage we are testing one.(sorry I only know that "%20" can be the parameter equal to a space.)
+
 
 ## Part 2: Bugs and Debugging
 In week 3, we debuged a program and I'll display some of my results below.(for ArrayExamples.java and ArrayTests.java)
