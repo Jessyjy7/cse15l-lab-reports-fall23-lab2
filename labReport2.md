@@ -146,6 +146,7 @@ This input doesn't induce a failure because it only contains one element in the 
 ![Image](db1.png)
 
 4. The bug, as the before-and-after code change required to fix it:
+
 Before
 ```
 static void reverseInPlace(int[] arr) {
@@ -170,4 +171,5 @@ The changes also allow the index to be saved by temp so it won't be lost while s
 
 ## Part 3
 In lab 2, I learned that the port number can be any random large number that is not in use, and to access the CSE lab computers on my own laptop, I should have my laptop connected to UCSD Protected, then I can have the access to the localhost test page.
+
 In lab 3, I learned that if I can't see where the bug is by just looking at the code, I can write out the process of how the code works step by step, then see how the code led to a wrong or unexptected output.(Our tutor helped me out on the thinking process, thanks!)
