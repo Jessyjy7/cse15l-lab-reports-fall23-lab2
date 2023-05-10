@@ -1,10 +1,10 @@
 # Lab Report 2
 ## This lab report will contain three parts:
-* String Server(unfinished)
+* String Server
 * Bugs and Debugging
 * Reflection on Learning
 
-## Part 1: String Server(unfinished)
+## Part 1: String Server
 The code for StringServer.java and Server.java is shown below:
 1. StringServer.java
 
