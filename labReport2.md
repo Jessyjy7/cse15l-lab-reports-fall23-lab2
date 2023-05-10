@@ -115,13 +115,13 @@ public class Server {
 ```
 Below, I'll display 2 examples of calling the `add-message` method using `/add-message?s=<string>` query in the URL:
 1. `/add-message?s=How`, then the webpage should have the argument "How" on the path local host home page. The field toAdd in the java file should equal to "How" as well. The code `String query = url.getQuery()` will get the full query from the URL and store it. Then `if(url.getPath().equals("/add-message"))` will find out if the query has `/add-message`, if so `String toAdd = query.split("=")[1]` will take everything after "=" as the message to be added. `this.lines.add(toAdd)` will do the add-message function for the webpage we are testing one.
-
+![Image](how.png)
 
 2. `/add-message?s=How%20are%20you`, then the webpage should have the argument "How are you" as the line after "How" on the path local host home page. The field toAdd in the java file should equal to "How are you" as well. The code `String query = url.getQuery()` will get the full query from the URL and store it. Then `if(url.getPath().equals("/add-message"))` will find out if the query has `/add-message`, if so `String toAdd = query.split("=")[1]` will take everything after "=" as the message to be added. `this.lines.add(toAdd)` will do the add-message function for the webpage we are testing one.(sorry I only know that "%20" can be the parameter equal to a space.)
-
+![Image](howAreYou.png)
 
 ## Part 2: Bugs and Debugging
-In week 3, we debuged a program and I'll display some of my results below.(for ArrayExamples.java and ArrayTests.java)
+In week 3, we debuged a program and I'll display some of my results below.(for `ArrayExamples.java` and `ArrayTests.java`)
 1. A failure-inducing input for the buggy program
 ```
 static void reverseInPlace(int[] arr) {
@@ -139,9 +139,13 @@ static void reverseInPlace(int[] arr) {
     assertArrayEquals(new int[]{ 3 }, input1);
 	}
 ```
-3. The symptom, as the output of running the tests
+This input doesn't induce a failure because it only contains one element in the array, and the `testReverserInPlace()` won't process the array in a wrong way if it only contains an empty array or an array with only one element.
+![Image](db2.png)
 
-4. The bug, as the before-and-after code change required to fix it
+3. The symptom, as the output of running the tests is shown as the image below. The symptom is that `testReverserInPlace()` is having output `3` where expected `2` and having output `0` where expected `4`. This pattern may be caused by the for-loop failed to store the Reversed value.
+![Image](db1.png)
+
+4. The bug, as the before-and-after code change required to fix it:
 Before
 ```
 static void reverseInPlace(int[] arr) {
@@ -165,4 +169,5 @@ The changes allows the for-loop to loop through 1/2 length of the loop so that t
 The changes also allow the index to be saved by temp so it won't be lost while swapping.
 
 ## Part 3
-
+In lab 2, I learned that the port number can be any random large number that is not in use, and to access the CSE lab computers on my own laptop, I should have my laptop connected to UCSD Protected, then I can have the access to the localhost test page.
+In lab 3, I learned that if I can't see where the bug is by just looking at the code, I can write out the process of how the code works step by step, then see how the code led to a wrong or unexptected output.(Our tutor helped me out on the thinking process, thanks!)
