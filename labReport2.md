@@ -7,6 +7,7 @@
 ## Part 1: String Server(unfinished)
 The code for StringServer.java and Server.java is shown below:
 1. StringServer.java
+
 ```
 import java.io.IOException;
 import java.net.URI;
@@ -37,8 +38,7 @@ class StringHandler implements URLHandler {
     }
   }
 }
-```
-```
+
 class StringServer {
   public static void main(String[] args) throws IOException {
     if(args.length == 0){
@@ -58,6 +58,7 @@ class StringServer {
 ```
 
 2. Server.java
+
 ```
 // A simple web server using Java's built-in HttpServer
 
@@ -100,8 +101,7 @@ class ServerHttpHandler implements HttpHandler {
         }
     }
 }
-```
-```
+
 public class Server {
     public static void start(int port, URLHandler handler) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
