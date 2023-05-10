@@ -55,6 +55,7 @@ class StringServer {
   }
 }
 ```
+
 2. Server.java
 ```
 // A simple web server using Java's built-in HttpServer
@@ -113,6 +114,7 @@ public class Server {
     }
 }
 ```
+
 Below, I'll display 2 examples of calling the `add-message` method using `/add-message?s=<string>` query in the URL:
 1. `/add-message?s=How`, then the webpage should have the argument "How" on the path local host home page. The field toAdd in the java file should equal to "How" as well. The code `String query = url.getQuery()` will get the full query from the URL and store it. Then `if(url.getPath().equals("/add-message"))` will find out if the query has `/add-message`, if so `String toAdd = query.split("=")[1]` will take everything after "=" as the message to be added. `this.lines.add(toAdd)` will do the add-message function for the webpage we are testing one.
 ![Image](how.png)
